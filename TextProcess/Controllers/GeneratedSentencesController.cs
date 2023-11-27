@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using TextAnalysis.Interfaces;
-using TextProcess.Database.DbModels;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using TextProcess.Database.Repositories;
-using TextProcess.Utilities;
+using TextProcess.DTO;
+using TextProcess.Services.Interfaces;
 
 namespace TextProcess.Controllers
 {
@@ -11,20 +10,14 @@ namespace TextProcess.Controllers
 	[Route("api/[controller]")]
 	public class GeneratedSentencesController : ControllerBase
 	{
-		private readonly TextProcessRepository _repository;
-		private readonly ISentencesParser _sentenceParser;
-		private readonly IFrequencyAnalysis _frequencyAnalysis;
-		private readonly ISentenceGenerator _sentenceGenerator;
+		private readonly TextRepository _repository;
+		private readonly ISentenceGeneratorService _sentenceGenerator;
 
 		public GeneratedSentencesController(
-			TextProcessRepository repository,
-			ISentencesParser sentencesParser,
-			IFrequencyAnalysis frequencyAnalysis,
-			ISentenceGenerator sentenceGenerator)
+			TextRepository repository,
+			ISentenceGeneratorService sentenceGenerator)
 		{
 			_repository = repository;
-			_sentenceParser = sentencesParser;
-			_frequencyAnalysis = frequencyAnalysis;
 			_sentenceGenerator = sentenceGenerator;
 		}
 
@@ -40,7 +33,9 @@ namespace TextProcess.Controllers
 				return NotFound();
 			}
 
-			return Ok(sentences);
+			var sentencesDto = sentences.Adapt<List<SentenceDto>>();
+
+			return Ok(sentencesDto);
 		}
 
 		[HttpGet("GetGeneratedSentence/{id}")]
@@ -55,7 +50,9 @@ namespace TextProcess.Controllers
 				return NotFound();
 			}
 
-			return Ok(sentence);
+			var sentenceDto = sentence.Adapt<SentenceDto>();
+
+			return Ok(sentenceDto);
 		}
 
 		[HttpPost("GenerateSentence")]
@@ -66,40 +63,16 @@ namespace TextProcess.Controllers
 			[FromForm] string phraseBeginning, 
 			[FromForm] int wordsCount)
 		{
-			var sourceText = await _repository.GetTextAsync(sourceTextId);
-			Dictionary<string, string> buildingWords;
+			var sourceText = await _repository.GetTextAsync(sourceTextId); 
 
 			if (sourceText is null)
 			{
-				return BadRequest(sourceTextId);
+				return NotFound(sourceTextId);
 			}
 
-			if (sourceText.GenerationWords.IsNullOrEmpty())
-			{
-				var parsedSentences = _sentenceParser.ParseSentences(sourceText.Content!);
-				buildingWords = _frequencyAnalysis.GetMostFrequentWords(parsedSentences)!;
+			var newSentence = await _sentenceGenerator.GenerateSentenceAsync(sourceText, phraseBeginning, wordsCount);
 
-				var serializer = new Serializer();
-				sourceText.GenerationWords = serializer.SerializeDictionaryToXml(buildingWords);
-
-				await _repository.UpdateTextAsync(sourceText);
-			}
-			else
-			{
-				var serializer = new Serializer();
-				buildingWords = serializer.DeserializeXmlToDictionary(sourceText.GenerationWords!);
-			}
-
-			var sentence = new GeneratedSentences
-			{
-				Sentence = _sentenceGenerator.ContinuePhrase(buildingWords, phraseBeginning, wordsCount),
-				TextTitleId = sourceText.Id,
-				TextTitle = sourceText
-			};
-
-			await _repository.AddSentenceAsync(sentence);
-
-			return Created();
+			return Created("", newSentence);
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TextProcess.Database;
 
@@ -10,9 +11,11 @@ using TextProcess.Database;
 namespace TextProcess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231126073243_UpdateModels")]
+    partial class UpdateModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +24,7 @@ namespace TextProcess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TextProcess.Database.DbModels.GeneratedSentence", b =>
+            modelBuilder.Entity("TextProcess.Database.DbModels.GeneratedSentences", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,7 +45,7 @@ namespace TextProcess.Migrations
                     b.ToTable("GeneratedSentences");
                 });
 
-            modelBuilder.Entity("TextProcess.Database.DbModels.SourceText", b =>
+            modelBuilder.Entity("TextProcess.Database.DbModels.SourceTexts", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,9 +67,9 @@ namespace TextProcess.Migrations
                     b.ToTable("SourceTexts");
                 });
 
-            modelBuilder.Entity("TextProcess.Database.DbModels.GeneratedSentence", b =>
+            modelBuilder.Entity("TextProcess.Database.DbModels.GeneratedSentences", b =>
                 {
-                    b.HasOne("TextProcess.Database.DbModels.SourceText", "Text")
+                    b.HasOne("TextProcess.Database.DbModels.SourceTexts", "Text")
                         .WithMany("GeneratedSentences")
                         .HasForeignKey("TextId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -75,7 +78,7 @@ namespace TextProcess.Migrations
                     b.Navigation("Text");
                 });
 
-            modelBuilder.Entity("TextProcess.Database.DbModels.SourceText", b =>
+            modelBuilder.Entity("TextProcess.Database.DbModels.SourceTexts", b =>
                 {
                     b.Navigation("GeneratedSentences");
                 });

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using TextProcess.Database.DbModels;
 using TextProcess.Database.Repositories;
+using TextProcess.DTO;
 
 namespace TextProcess.Controllers
 {
@@ -8,9 +10,9 @@ namespace TextProcess.Controllers
 	[Route("api/[controller]")]
 	public class SourceTextsController : ControllerBase
 	{
-		private readonly TextProcessRepository _repository;
+		private readonly TextRepository _repository;
 
-		public SourceTextsController(TextProcessRepository repository)
+		public SourceTextsController(TextRepository repository)
 		{
 			_repository = repository;
 		}
@@ -27,7 +29,9 @@ namespace TextProcess.Controllers
 				return NotFound();
 			}
 
-			return Ok(sourceTexts);
+			var sourceTextsDto = sourceTexts.Adapt<List<TextDto>>();
+
+			return Ok(sourceTextsDto);
 		}
 
 		[HttpGet("GetById/{id}")]
@@ -42,18 +46,22 @@ namespace TextProcess.Controllers
 				return NotFound();
 			}
 
-			return Ok(sourceText);
+			var sourceTextDto = sourceText.Adapt<TextDto>();
+
+			return Ok(sourceTextDto);
 		}
 
 		[HttpPost("Add")]
 		[ProducesResponseType(StatusCodes.Status201Created)]
 		public async Task<IActionResult> AddSourceText([FromForm] string title, [FromForm] string text)
 		{
-			var newSourceText = new SourceTexts { Title = title, Content = text };
+			var newSourceText = new SourceText { Title = title, Content = text };
 
 			await _repository.AddTextAsync(newSourceText);
 
-			return Created();
+			var newSourceTextDto = newSourceText.Adapt<TextDto>();
+
+			return Created("", newSourceTextDto);
 		}
 
 		[HttpDelete("DeleteAll")]

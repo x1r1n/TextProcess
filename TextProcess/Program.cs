@@ -3,16 +3,24 @@ using TextAnalysis;
 using TextAnalysis.Interfaces;
 using TextProcess.Database;
 using TextProcess.Database.Repositories;
+using TextProcess.Mapper;
+using TextProcess.Services;
+using TextProcess.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddScoped<ISentencesParser, SentencesParser>();
 builder.Services.AddScoped<IFrequencyAnalysis, FrequencyAnalysis>();
 builder.Services.AddScoped<ISentenceGenerator, SentenceGenerator>();
-builder.Services.AddScoped<TextProcessRepository>();
+builder.Services.AddScoped<ISentenceGeneratorService, SentenceGeneratorService>();
+
+builder.Services.AddScoped<TextRepository>();
+
+builder.Services.AddMapping();
 
 string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
@@ -23,8 +31,6 @@ if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
 	app.UseSwaggerUI();
-
-	app.UseReDoc();
 }
 
 app.UseHttpsRedirection();

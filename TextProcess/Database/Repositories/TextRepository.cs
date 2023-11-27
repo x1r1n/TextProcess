@@ -5,30 +5,30 @@ using TextProcess.Database.DbModels;
 
 namespace TextProcess.Database.Repositories
 {
-	public class TextProcessRepository
+	public class TextRepository
 	{
 		private ApplicationContext _context;
-		private DbSet<SourceTexts> _sourceTexts;
-		private DbSet<GeneratedSentences> _generatedSentences;
+		private DbSet<SourceText> _sourceTexts;
+		private DbSet<GeneratedSentence> _generatedSentences;
 
-		public TextProcessRepository(ApplicationContext context)
+		public TextRepository(ApplicationContext context)
 		{
 			_context = context;
-			_sourceTexts = _context.Set<SourceTexts>();
-			_generatedSentences = _context.Set<GeneratedSentences>();
+			_sourceTexts = _context.Set<SourceText>();
+			_generatedSentences = _context.Set<GeneratedSentence>();
 		}
 
-		public async Task<List<SourceTexts>> GetAllTextsAsync()
+		public async Task<List<SourceText>> GetAllTextsAsync()
 		{
 			return await _sourceTexts.ToListAsync();
 		}
 
-		public async Task<SourceTexts> GetTextAsync(int id)
+		public async Task<SourceText> GetTextAsync(int id)
 		{
 			return await _sourceTexts.FindAsync(id);
 		}
 
-		public async Task UpdateTextAsync(SourceTexts updateText)
+		public async Task UpdateTextAsync(SourceText updateText)
 		{
 			var text = await _sourceTexts.FindAsync(updateText.Id);
 
@@ -38,7 +38,7 @@ namespace TextProcess.Database.Repositories
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task AddTextAsync(SourceTexts text)
+		public async Task AddTextAsync(SourceText text)
 		{
 			await _sourceTexts.AddAsync(text);
 			await _context.SaveChangesAsync();
@@ -56,17 +56,17 @@ namespace TextProcess.Database.Repositories
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task<List<GeneratedSentences>> GetAllSentencesAsync()
+		public async Task<List<GeneratedSentence>> GetAllSentencesAsync()
 		{
 			return await _generatedSentences.ToListAsync();
 		}
 
-		public async Task<GeneratedSentences> GetSentenceAsync(int id)
+		public async Task<GeneratedSentence> GetSentenceAsync(int id)
 		{
 			return await _generatedSentences.FindAsync(id);
 		}
 
-		public async Task AddSentenceAsync(GeneratedSentences sentence)
+		public async Task AddSentenceAsync(GeneratedSentence sentence)
 		{
 			await _generatedSentences.AddAsync(sentence);
 			await _context.SaveChangesAsync();

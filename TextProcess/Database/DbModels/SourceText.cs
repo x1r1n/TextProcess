@@ -1,10 +1,10 @@
 ﻿namespace TextProcess.Database.DbModels
 {
-	public class SourceTexts : BaseModel
+	public class SourceText : BaseModel
 	{
 		public string? Title { get; set; }
 		public string? Content { get; set; }
 		public string? GenerationWords { get; set; }
-		public List<GeneratedSentences>? GeneratedSentences { get; set; }
+		public List<GeneratedSentence>? GeneratedSentences { get; set; }
 	}
 }

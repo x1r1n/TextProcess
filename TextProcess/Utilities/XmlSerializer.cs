@@ -3,9 +3,9 @@ using System.Xml;
 
 namespace TextProcess.Utilities
 {
-	public class Serializer
+	public class XmlSerializer
 	{
-		public string SerializeDictionaryToXml(Dictionary<string, string> keyValuePairs)
+		public string DictionaryToXml(Dictionary<string, string> keyValuePairs)
 		{
 			var serializer = new DataContractSerializer(typeof(Dictionary<string, string>));
 
@@ -20,7 +20,7 @@ namespace TextProcess.Utilities
 			}
 		}
 
-		public Dictionary<string, string> DeserializeXmlToDictionary(string xmlString)
+		public Dictionary<string, string> XmlToDictionary(string xmlString)
 		{
 			var serializer = new DataContractSerializer(typeof(Dictionary<string, string>));
 
