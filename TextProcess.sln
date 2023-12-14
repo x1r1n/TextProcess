@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextProcess", "TextProcess\TextProcess.csproj", "{3849FC64-B567-471F-9C71-8F2EA75CC311}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseForge", "TextAnalysis\PhraseForge.csproj", "{B4AE0BF5-3C15-40AF-9CAE-2493F82DE433}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseForge", "PhraseForge\PhraseForge.csproj", "{F1123DE8-FB7D-412A-9D92-811E2A0ED839}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{3849FC64-B567-471F-9C71-8F2EA75CC311}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3849FC64-B567-471F-9C71-8F2EA75CC311}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3849FC64-B567-471F-9C71-8F2EA75CC311}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4AE0BF5-3C15-40AF-9CAE-2493F82DE433}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4AE0BF5-3C15-40AF-9CAE-2493F82DE433}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4AE0BF5-3C15-40AF-9CAE-2493F82DE433}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4AE0BF5-3C15-40AF-9CAE-2493F82DE433}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1123DE8-FB7D-412A-9D92-811E2A0ED839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1123DE8-FB7D-412A-9D92-811E2A0ED839}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1123DE8-FB7D-412A-9D92-811E2A0ED839}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1123DE8-FB7D-412A-9D92-811E2A0ED839}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

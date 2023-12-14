@@ -22,7 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\TextAnalysis\PhraseForge.csproj" />
+	  <ProjectReference Include="..\PhraseForge\PhraseForge.csproj" />
 	</ItemGroup>
 
 </Project>
