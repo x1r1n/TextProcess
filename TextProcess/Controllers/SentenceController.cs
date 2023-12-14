@@ -8,12 +8,12 @@ namespace TextProcess.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
-	public class GeneratedSentencesController : ControllerBase
+	public class SentenceController : ControllerBase
 	{
 		private readonly TextRepository _repository;
 		private readonly ISentenceGeneratorService _sentenceGenerator;
 
-		public GeneratedSentencesController(
+		public SentenceController(
 			TextRepository repository,
 			ISentenceGeneratorService sentenceGenerator)
 		{

@@ -8,11 +8,11 @@ namespace TextProcess.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
-	public class SourceTextsController : ControllerBase
+	public class TextController : ControllerBase
 	{
 		private readonly TextRepository _repository;
 
-		public SourceTextsController(TextRepository repository)
+		public TextController(TextRepository repository)
 		{
 			_repository = repository;
 		}
