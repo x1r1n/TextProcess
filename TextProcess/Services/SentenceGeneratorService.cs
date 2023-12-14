@@ -1,6 +1,6 @@
 ﻿using Mapster;
 using Microsoft.IdentityModel.Tokens;
-using TextAnalysis.Interfaces;
+using PhraseForge.Interfaces;
 using TextProcess.Database.DbModels;
 using TextProcess.Database.Repositories;
 using TextProcess.DTO;
@@ -38,7 +38,7 @@ namespace TextProcess.Services
             }
             else
             {
-                buildingWords = DeserializeGenerationWords(sourceText.GenerationWords!);
+                buildingWords = DeserializeBuildingWords(sourceText.GenerationWords!);
             }
 
             var sentence = new SentenceDto
@@ -56,16 +56,21 @@ namespace TextProcess.Services
         {
             var parsedSentences = _sentenceParser.ParseSentences(sourceText.Content!);
             var buildingWords = _frequencyAnalysis.GetMostFrequentWords(parsedSentences);
-
-            var serializer = new XmlSerializer();
-            sourceText.GenerationWords = serializer.DictionaryToXml(buildingWords!);
+            
+            sourceText.GenerationWords = SerializeBuildingWords(buildingWords);
 
             await _repository.UpdateTextAsync(sourceText);
 
             return buildingWords!;
         }
 
-        private Dictionary<string, string> DeserializeGenerationWords(string xml)
+        private string SerializeBuildingWords(Dictionary<string, string> buildingWords)
+        {
+			var serializer = new XmlSerializer();
+			return serializer.DictionaryToXml(buildingWords!);
+		}
+
+        private Dictionary<string, string> DeserializeBuildingWords(string xml)
         {
             var serializer = new XmlSerializer();
             return serializer.XmlToDictionary(xml);

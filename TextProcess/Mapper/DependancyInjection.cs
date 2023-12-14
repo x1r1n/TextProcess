@@ -9,6 +9,7 @@ namespace TextProcess.Mapper
 		public static IServiceCollection AddMapping(this IServiceCollection services)
 		{
 			var config = TypeAdapterConfig.GlobalSettings;
+
 			config.Scan(Assembly.GetExecutingAssembly());
 
 			services.AddSingleton(config);

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextProcess", "TextProcess\TextProcess.csproj", "{3849FC64-B567-471F-9C71-8F2EA75CC311}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextProcess", "TextProcess\TextProcess.csproj", "{3849FC64-B567-471F-9C71-8F2EA75CC311}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextAnalysis", "TextAnalysis\TextAnalysis.csproj", "{B4AE0BF5-3C15-40AF-9CAE-2493F82DE433}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseForge", "TextAnalysis\PhraseForge.csproj", "{B4AE0BF5-3C15-40AF-9CAE-2493F82DE433}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -57,7 +57,7 @@ namespace TextProcess.Controllers
 
 		[HttpPost("GenerateSentence")]
 		[ProducesResponseType(StatusCodes.Status201Created)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<IActionResult> GenerateSentence(
 			[FromForm] int sourceTextId, 
 			[FromForm] string phraseBeginning, 

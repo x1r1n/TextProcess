@@ -1,11 +1,11 @@
-﻿using TextAnalysis.Interfaces;
+﻿using PhraseForge.Interfaces;
 
-namespace TextAnalysis
+namespace PhraseForge
 {
     public class SentenceGenerator : ISentenceGenerator
 	{
         public string ContinuePhrase
-            (Dictionary<string, string>? generationWords,
+            (Dictionary<string, string> generationWords,
             string phraseBeginning,
             int wordsCount)
         {

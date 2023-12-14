@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TextAnalysis.Interfaces
+namespace PhraseForge.Interfaces
 {
 	public interface ISentenceGenerator
 	{
-		string ContinuePhrase(Dictionary<string, string>? _generationWords, string phraseBeginning, int wordsCount);
+		string ContinuePhrase(Dictionary<string, string> _generationWords, string phraseBeginning, int wordsCount);
 	}
 }

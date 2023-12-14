@@ -1,10 +1,10 @@
-﻿using TextAnalysis.Interfaces;
+﻿using PhraseForge.Interfaces;
 
-namespace TextAnalysis
+namespace PhraseForge
 {
     public class SentencesParser : ISentencesParser
 	{
-        public List<List<string>>? ParseSentences(string text)
+        public List<List<string>> ParseSentences(string text)
         {
             if (String.IsNullOrEmpty(text))
             {

@@ -1,11 +1,11 @@
 ﻿
-using TextAnalysis.Interfaces;
+using PhraseForge.Interfaces;
 
-namespace TextAnalysis
+namespace PhraseForge
 {
     public class FrequencyAnalysis : IFrequencyAnalysis
 	{
-        public Dictionary<string, string>? GetMostFrequentWords(List<List<string>>? text)
+        public Dictionary<string, string> GetMostFrequentWords(List<List<string>>? text)
         {
             if (text is null || text.Count == 0)
             {

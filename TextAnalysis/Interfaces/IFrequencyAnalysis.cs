@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TextAnalysis.Interfaces
+namespace PhraseForge.Interfaces
 {
 	public interface IFrequencyAnalysis
 	{
-		Dictionary<string, string>? GetMostFrequentWords(List<List<string>>? text);
+		Dictionary<string, string> GetMostFrequentWords(List<List<string>>? text);
 	}
 }

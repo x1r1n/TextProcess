@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TextAnalysis.Interfaces
+namespace PhraseForge.Interfaces
 {
 	public interface ISentencesParser
 	{
-		List<List<string>>? ParseSentences(string text);
+		List<List<string>> ParseSentences(string text);
 	}
 }

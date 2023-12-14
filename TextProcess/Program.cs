@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using TextAnalysis;
-using TextAnalysis.Interfaces;
+using PhraseForge;
+using PhraseForge.Interfaces;
 using TextProcess.Database;
 using TextProcess.Database.Repositories;
 using TextProcess.Mapper;
