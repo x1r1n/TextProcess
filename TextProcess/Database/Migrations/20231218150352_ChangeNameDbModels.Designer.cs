@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TextProcess.Database;
 
@@ -10,9 +11,11 @@ using TextProcess.Database;
 namespace TextProcess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231218150352_ChangeNameDbModels")]
+    partial class ChangeNameDbModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace TextProcess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SourceText");
+                    b.ToTable("SourceTexts");
                 });
 
             modelBuilder.Entity("TextProcess.Database.DbModels.SyntheticPhrase", b =>
@@ -51,7 +54,7 @@ namespace TextProcess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Phrase")
+                    b.Property<string>("Sentence")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SourceTextId")
@@ -61,7 +64,7 @@ namespace TextProcess.Migrations
 
                     b.HasIndex("SourceTextId");
 
-                    b.ToTable("SyntheticPhrase");
+                    b.ToTable("GeneratedSentences");
                 });
 
             modelBuilder.Entity("TextProcess.Database.DbModels.SyntheticPhrase", b =>

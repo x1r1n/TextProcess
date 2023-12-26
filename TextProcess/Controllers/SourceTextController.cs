@@ -8,11 +8,11 @@ namespace TextProcess.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
-	public class TextController : ControllerBase
+	public class SourceTextController : ControllerBase
 	{
 		private readonly TextRepository _repository;
 
-		public TextController(TextRepository repository)
+		public SourceTextController(TextRepository repository)
 		{
 			_repository = repository;
 		}
@@ -29,7 +29,7 @@ namespace TextProcess.Controllers
 				return NotFound();
 			}
 
-			var sourceTextsDto = sourceTexts.Adapt<List<TextDto>>();
+			var sourceTextsDto = sourceTexts.Adapt<List<SourceTextDto>>();
 
 			return Ok(sourceTextsDto);
 		}
@@ -46,7 +46,7 @@ namespace TextProcess.Controllers
 				return NotFound();
 			}
 
-			var sourceTextDto = sourceText.Adapt<TextDto>();
+			var sourceTextDto = sourceText.Adapt<SourceTextDto>();
 
 			return Ok(sourceTextDto);
 		}
@@ -59,7 +59,7 @@ namespace TextProcess.Controllers
 
 			await _repository.AddTextAsync(newSourceText);
 
-			var newSourceTextDto = newSourceText.Adapt<TextDto>();
+			var newSourceTextDto = newSourceText.Adapt<SourceTextDto>();
 
 			return Created("", newSourceTextDto);
 		}

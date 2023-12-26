@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<ISentencesParser, SentencesParser>();
 builder.Services.AddScoped<IFrequencyAnalysis, FrequencyAnalysis>();
 builder.Services.AddScoped<ISentenceGenerator, SentenceGenerator>();
-builder.Services.AddScoped<ISentenceGeneratorService, SentenceGeneratorService>();
+builder.Services.AddScoped<IPhraseGeneratorService, PhraseGeneratorService>();
 
 builder.Services.AddScoped<TextRepository>();
 

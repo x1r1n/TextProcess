@@ -9,13 +9,13 @@ namespace TextProcess.Database.Repositories
 	{
 		private ApplicationContext _context;
 		private DbSet<SourceText> _sourceTexts;
-		private DbSet<GeneratedSentence> _generatedSentences;
+		private DbSet<SyntheticPhrase> _generatedSentences;
 
 		public TextRepository(ApplicationContext context)
 		{
 			_context = context;
 			_sourceTexts = _context.Set<SourceText>();
-			_generatedSentences = _context.Set<GeneratedSentence>();
+			_generatedSentences = _context.Set<SyntheticPhrase>();
 		}
 
 		public async Task<List<SourceText>> GetAllTextsAsync()
@@ -33,7 +33,7 @@ namespace TextProcess.Database.Repositories
 			var text = await _sourceTexts.FindAsync(updateText.Id);
 
 			text.GenerationWords = updateText.GenerationWords;
-			text.GeneratedSentences = updateText.GeneratedSentences;
+			text.SyntheticPhrases = updateText.SyntheticPhrases;
 
 			await _context.SaveChangesAsync();
 		}
@@ -56,31 +56,31 @@ namespace TextProcess.Database.Repositories
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task<List<GeneratedSentence>> GetAllSentencesAsync()
+		public async Task<List<SyntheticPhrase>> GetAllPhrasesAsync()
 		{
 			return await _generatedSentences.ToListAsync();
 		}
 
-		public async Task<GeneratedSentence> GetSentenceAsync(int id)
+		public async Task<SyntheticPhrase> GetPhraseAsync(int id)
 		{
 			return await _generatedSentences.FindAsync(id);
 		}
 
-		public async Task AddSentenceAsync(GeneratedSentence sentence)
+		public async Task AddPhraseAsync(SyntheticPhrase phrase)
 		{
-			await _generatedSentences.AddAsync(sentence);
+			await _generatedSentences.AddAsync(phrase);
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task DeleteAllSentencesAsync()
+		public async Task DeleteAllPhrasesAsync()
 		{
-			_generatedSentences.RemoveRange(GetAllSentencesAsync().Result);
+			_generatedSentences.RemoveRange(GetAllPhrasesAsync().Result);
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task DeleteSentenceAsync(int id)
+		public async Task DeletePhraseAsync(int id)
 		{
-			_generatedSentences.Remove(await GetSentenceAsync(id));
+			_generatedSentences.Remove(await GetPhraseAsync(id));
 			await _context.SaveChangesAsync();
 		}
 	}

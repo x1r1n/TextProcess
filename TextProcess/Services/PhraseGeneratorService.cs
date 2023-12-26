@@ -9,14 +9,14 @@ using TextProcess.Utilities;
 
 namespace TextProcess.Services
 {
-    public class SentenceGeneratorService : ISentenceGeneratorService
+    public class PhraseGeneratorService : IPhraseGeneratorService
 	{
         private readonly TextRepository _repository;
         private readonly ISentencesParser _sentenceParser;
         private readonly IFrequencyAnalysis _frequencyAnalysis;
         private readonly ISentenceGenerator _sentenceGenerator;
 
-        public SentenceGeneratorService(
+        public PhraseGeneratorService(
             TextRepository repository,
             ISentencesParser sentencesParser,
             IFrequencyAnalysis frequencyAnalysis,
@@ -28,7 +28,7 @@ namespace TextProcess.Services
             _sentenceGenerator = sentenceGenerator;
         }
 
-        public async Task<SentenceDto> GenerateSentenceAsync(SourceText sourceText, string phraseBeginning, int wordsCount)
+        public async Task<SyntheticPhraseDto> GeneratePhraseAsync(SourceText sourceText, string phraseBeginning, int wordsCount)
         {
             Dictionary<string, string> buildingWords;
 
@@ -41,13 +41,13 @@ namespace TextProcess.Services
                 buildingWords = DeserializeBuildingWords(sourceText.GenerationWords!);
             }
 
-            var sentence = new SentenceDto
+            var sentence = new SyntheticPhraseDto
             {
-                Sentence = _sentenceGenerator.ContinuePhrase(buildingWords, phraseBeginning, wordsCount),
-                TextId = sourceText.Id
+                Phrase = _sentenceGenerator.ContinuePhrase(buildingWords, phraseBeginning, wordsCount),
+                SourceTextId = sourceText.Id
             };
 
-            await _repository.AddSentenceAsync(sentence.Adapt<GeneratedSentence>());
+            await _repository.AddPhraseAsync(sentence.Adapt<SyntheticPhrase>());
 
             return sentence;
         }

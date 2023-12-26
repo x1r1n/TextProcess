@@ -1,6 +1,6 @@
 ﻿namespace TextProcess.DTO
 {
-	public class TextDto
+	public class SourceTextDto
 	{
 		public int Id { get; set; }
 		public string? Title { get; set; }

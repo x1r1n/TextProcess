@@ -8,10 +8,10 @@ namespace TextProcess.Mapper
 	{
 		public void Register(TypeAdapterConfig config)
 		{
-			config.NewConfig<SourceText, TextDto>()
+			config.NewConfig<SourceText, SourceTextDto>()
 				.RequireDestinationMemberSource(true);
 
-			config.NewConfig<GeneratedSentence, SentenceDto>()
+			config.NewConfig<SyntheticPhrase, SyntheticPhraseDto>()
 				.RequireDestinationMemberSource(true);
 		}
 	}

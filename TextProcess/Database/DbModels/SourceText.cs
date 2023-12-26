@@ -5,6 +5,6 @@
 		public string? Title { get; set; }
 		public string? Content { get; set; }
 		public string? GenerationWords { get; set; }
-		public List<GeneratedSentence>? GeneratedSentences { get; set; }
+		public List<SyntheticPhrase>? SyntheticPhrases { get; set; }
 	}
 }
