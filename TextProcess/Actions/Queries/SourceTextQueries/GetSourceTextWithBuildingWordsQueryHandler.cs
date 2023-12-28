@@ -7,12 +7,12 @@ using TextProcess.DTO;
 
 namespace TextProcess.Actions.Queries.SourceTextQueries
 {
-    public class GetSourceTextWithBuildingsWordsQueryHandler
+    public class GetSourceTextWithBuildingWordsQueryHandler
         : IRequestHandler<GetSourceTextWithBuildingWordsQuery, SourceTextWithBuildingWordsDto>
     {
         private readonly ApplicationContext _context;
 
-        public GetSourceTextWithBuildingsWordsQueryHandler(ApplicationContext context)
+        public GetSourceTextWithBuildingWordsQueryHandler(ApplicationContext context)
         {
             _context = context;
         }
