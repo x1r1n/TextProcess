@@ -2,8 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using PhraseForge;
 using PhraseForge.Interfaces;
 using TextProcess.Database;
-using TextProcess.Database.Repositories;
-using TextProcess.Mapper;
 using TextProcess.Services;
 using TextProcess.Services.Interfaces;
 
@@ -18,9 +16,7 @@ builder.Services.AddScoped<IFrequencyAnalysis, FrequencyAnalysis>();
 builder.Services.AddScoped<ISentenceGenerator, SentenceGenerator>();
 builder.Services.AddScoped<IPhraseGeneratorService, PhraseGeneratorService>();
 
-builder.Services.AddScoped<TextRepository>();
-
-builder.Services.AddMapping();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
 string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));

@@ -1,8 +1,8 @@
-﻿using Mapster;
+﻿using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using PhraseForge.Interfaces;
-using TextProcess.Database.DbModels;
-using TextProcess.Database.Repositories;
+using TextProcess.Actions.Commands.SourceTextCommands.SetBuildingWords;
+using TextProcess.Actions.Commands.SyntheticPhraseCommands.AddSyntheticPhrase;
 using TextProcess.DTO;
 using TextProcess.Services.Interfaces;
 using TextProcess.Utilities;
@@ -11,55 +11,63 @@ namespace TextProcess.Services
 {
     public class PhraseGeneratorService : IPhraseGeneratorService
 	{
-        private readonly TextRepository _repository;
+        private readonly IMediator _mediator;
         private readonly ISentencesParser _sentenceParser;
         private readonly IFrequencyAnalysis _frequencyAnalysis;
         private readonly ISentenceGenerator _sentenceGenerator;
 
         public PhraseGeneratorService(
-            TextRepository repository,
+            IMediator mediator,
             ISentencesParser sentencesParser,
             IFrequencyAnalysis frequencyAnalysis,
             ISentenceGenerator sentenceGenerator)
         {
-            _repository = repository;
+            _mediator = mediator;
             _sentenceParser = sentencesParser;
             _frequencyAnalysis = frequencyAnalysis;
             _sentenceGenerator = sentenceGenerator;
         }
 
-        public async Task<SyntheticPhraseDto> GeneratePhraseAsync(SourceText sourceText, string phraseBeginning, int wordsCount)
+        public async Task<SyntheticPhraseDto> GeneratePhraseAsync(
+            SourceTextWithBuildingWordsDto sourceText, 
+            string phraseBeginning, 
+            int wordsCount,
+            CancellationToken token)
         {
             Dictionary<string, string> buildingWords;
 
-            if (sourceText.GenerationWords.IsNullOrEmpty())
+            if (sourceText.BuildingWords.IsNullOrEmpty())
             {
-                buildingWords = await InitializeBuildingWordsAsync(sourceText);
+                buildingWords = await InitializeBuildingWordsAsync(sourceText, token);
             }
             else
             {
-                buildingWords = DeserializeBuildingWords(sourceText.GenerationWords!);
+                buildingWords = DeserializeBuildingWords(sourceText.BuildingWords!);
             }
 
-            var sentence = new SyntheticPhraseDto
+            var phrase = await _mediator.Send(new AddSyntheticPhraseCommand
             {
                 Phrase = _sentenceGenerator.ContinuePhrase(buildingWords, phraseBeginning, wordsCount),
                 SourceTextId = sourceText.Id
-            };
+            });
 
-            await _repository.AddPhraseAsync(sentence.Adapt<SyntheticPhrase>());
-
-            return sentence;
+            return phrase;
         }
 
-        private async Task<Dictionary<string, string>> InitializeBuildingWordsAsync(SourceText sourceText)
+        private async Task<Dictionary<string, string>> InitializeBuildingWordsAsync(
+            SourceTextWithBuildingWordsDto sourceText,
+            CancellationToken token)
         {
             var parsedSentences = _sentenceParser.ParseSentences(sourceText.Content!);
             var buildingWords = _frequencyAnalysis.GetMostFrequentWords(parsedSentences);
             
-            sourceText.GenerationWords = SerializeBuildingWords(buildingWords);
+            sourceText.BuildingWords = SerializeBuildingWords(buildingWords);
 
-            await _repository.UpdateTextAsync(sourceText);
+            await _mediator.Send(new SetBuildingWordsCommand
+            {
+                Id = sourceText.Id,
+                BuildingWords = sourceText.BuildingWords,
+            }, token);
 
             return buildingWords!;
         }

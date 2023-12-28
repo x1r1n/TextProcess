@@ -5,6 +5,10 @@ namespace TextProcess.Services.Interfaces
 {
 	public interface IPhraseGeneratorService
 	{
-		Task<SyntheticPhraseDto> GeneratePhraseAsync(SourceText sourceTextId, string phraseBeginning, int wordsCount);
+		Task<SyntheticPhraseDto> GeneratePhraseAsync(
+			SourceTextWithBuildingWordsDto sourceTextId, 
+			string phraseBeginning, 
+			int wordsCount, 
+			CancellationToken token);
 	}
 }

@@ -1,83 +1,89 @@
-﻿using Mapster;
-using Microsoft.AspNetCore.Mvc;
-using TextProcess.Database.DbModels;
-using TextProcess.Database.Repositories;
-using TextProcess.DTO;
+﻿using Microsoft.AspNetCore.Mvc;
+using MediatR;
+using Microsoft.IdentityModel.Tokens;
+using TextProcess.Actions.Commands.SourceTextCommands.AddSourceText;
+using TextProcess.Actions.Queries.SourceTextQueries.GetAllSourceTexts;
+using TextProcess.Actions.Queries.SourceTextQueries.GetSourceText;
+using TextProcess.Actions.Commands.SourceTextCommands.DeleteAllSourceTexts;
+using TextProcess.Actions.Commands.SourceTextCommands.DeleteSourceText;
 
 namespace TextProcess.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("api/[controller]")]
 	public class SourceTextController : ControllerBase
 	{
-		private readonly TextRepository _repository;
+		private readonly IMediator _mediator;
 
-		public SourceTextController(TextRepository repository)
+		public SourceTextController(IMediator mediator)
 		{
-			_repository = repository;
+			_mediator = mediator;
 		}
 
 		[HttpGet("GetAll")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<IActionResult> GetAllSourceTexts()
+		[ProducesDefaultResponseType]
+		public async Task<IActionResult> GetAllSourceTexts(CancellationToken token)
 		{
-			var sourceTexts = await _repository.GetAllTextsAsync();
+			var sourceTexts = await _mediator.Send(new GetAllSourceTextsQuery(), token);
 
 			if (sourceTexts is null || sourceTexts.Count == 0)
 			{
 				return NotFound();
 			}
 
-			var sourceTextsDto = sourceTexts.Adapt<List<SourceTextDto>>();
-
-			return Ok(sourceTextsDto);
+			return Ok(sourceTexts);
 		}
 
 		[HttpGet("GetById/{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<IActionResult> GetSourceText(int id)
+		[ProducesDefaultResponseType]
+		public async Task<IActionResult> GetSourceText(GetSourceTextQuery request, CancellationToken token)
 		{
-			var sourceText = await _repository.GetTextAsync(id);
+			var sourceText = await _mediator.Send(request, token);
 
 			if (sourceText is null)
 			{
 				return NotFound();
 			}
 
-			var sourceTextDto = sourceText.Adapt<SourceTextDto>();
-
-			return Ok(sourceTextDto);
+			return Ok(sourceText);
 		}
 
 		[HttpPost("Add")]
-		[ProducesResponseType(StatusCodes.Status201Created)]
-		public async Task<IActionResult> AddSourceText([FromForm] string title, [FromForm] string text)
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesDefaultResponseType]
+		public async Task<IActionResult> AddSourceText([FromForm] AddSourceTextCommand request, CancellationToken token)
 		{
-			var newSourceText = new SourceText { Title = title, Content = text };
+			if (request.Title.IsNullOrEmpty() || request.Content.IsNullOrEmpty())
+			{
+				return BadRequest(request);
+			}
 
-			await _repository.AddTextAsync(newSourceText);
+			await _mediator.Send(request, token);
 
-			var newSourceTextDto = newSourceText.Adapt<SourceTextDto>();
-
-			return Created("", newSourceTextDto);
+			return Ok(request);
 		}
 
 		[HttpDelete("DeleteAll")]
 		[ProducesResponseType(StatusCodes.Status204NoContent)]
-		public async Task<IActionResult> DeleteAllSourceTexts()
+		[ProducesDefaultResponseType]
+		public async Task<IActionResult> DeleteAllSourceTexts(CancellationToken token)
 		{
-			await _repository.DeleteAllTextsAsync();
+			await _mediator.Send(new DeleteAllSourceTextsCommand(), token);
 
 			return NoContent();
 		}
 
 		[HttpDelete("DeleteById/{id}")]
 		[ProducesResponseType(StatusCodes.Status204NoContent)]
-		public async Task<IActionResult> DeleteSourceText(int id)
+		[ProducesDefaultResponseType]
+		public async Task<IActionResult> DeleteSourceText(DeleteSourceTextCommand request, CancellationToken token)
 		{
-			await _repository.DeleteTextAsync(id);
+			await _mediator.Send(request, token);
 
 			return NoContent();
 		}
