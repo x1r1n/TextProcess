@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using PhraseForge.Interfaces;
-using TextProcess.Actions.Commands.SourceTextCommands.SetBuildingWords;
-using TextProcess.Actions.Commands.SyntheticPhraseCommands.AddSyntheticPhrase;
+using TextProcess.Actions.Commands.SourceTextCommands;
+using TextProcess.Actions.Commands.SyntheticPhraseCommands;
 using TextProcess.DTO;
 using TextProcess.Services.Interfaces;
 using TextProcess.Utilities;

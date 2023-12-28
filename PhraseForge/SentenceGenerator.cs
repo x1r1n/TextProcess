@@ -18,6 +18,8 @@ namespace PhraseForge
 				return phraseBeginning;
 			}
 
+            phraseBeginning = phraseBeginning.ToLower();
+
             while (--wordsCount >= 0)
             {
                 var wordsBeginning = phraseBeginning.Split(' ');

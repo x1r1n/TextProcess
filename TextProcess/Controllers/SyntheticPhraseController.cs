@@ -1,15 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TextProcess.Actions.Commands.SyntheticPhraseCommands.DeleteAllSyntheticPhrases;
-using TextProcess.Actions.Commands.SyntheticPhraseCommands.DeleteSyntheticPhrase;
-using TextProcess.Actions.Queries.SourceTextQueries.GetSourceTextWithBuildingWords;
-using TextProcess.Actions.Queries.SyntheticPhraseQueries.GetAllSyntheticPhrases;
-using TextProcess.Actions.Queries.SyntheticPhraseQueries.GetSyntheticPhrase;
+using TextProcess.Actions.Commands.SyntheticPhraseCommands;
+using TextProcess.Actions.Queries.SourceTextQueries;
+using TextProcess.Actions.Queries.SyntheticPhraseQueries;
 using TextProcess.Services.Interfaces;
 
 namespace TextProcess.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("api/[controller]")]
 	public class SyntheticPhraseController : ControllerBase
 	{
@@ -40,11 +38,11 @@ namespace TextProcess.Controllers
 			return Ok(sentences);
 		}
 
-		[HttpGet("GetById/{id}")]
+		[HttpGet("GetById")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesDefaultResponseType]
-		public async Task<IActionResult> GetSyntheticPhrase(GetSyntheticPhraseQuery request, CancellationToken token)
+		public async Task<IActionResult> GetSyntheticPhrase([FromQuery] GetSyntheticPhraseQuery request, CancellationToken token)
 		{
 			var sentence = await _mediator.Send(request, token);
 
@@ -94,7 +92,7 @@ namespace TextProcess.Controllers
 		[HttpDelete("DeleteById")]
 		[ProducesResponseType(StatusCodes.Status204NoContent)]
 		[ProducesDefaultResponseType]
-		public async Task<IActionResult> DeleteSyntheticPhrases(DeleteSyntheticPhraseCommand request, CancellationToken token)
+		public async Task<IActionResult> DeleteSyntheticPhrases([FromForm] DeleteSyntheticPhraseCommand request, CancellationToken token)
 		{
 			await _mediator.Send(request, token);
 

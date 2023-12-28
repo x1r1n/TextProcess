@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
-using TextProcess.Actions.Commands.SourceTextCommands.AddSourceText;
-using TextProcess.Actions.Queries.SourceTextQueries.GetAllSourceTexts;
-using TextProcess.Actions.Queries.SourceTextQueries.GetSourceText;
-using TextProcess.Actions.Commands.SourceTextCommands.DeleteAllSourceTexts;
-using TextProcess.Actions.Commands.SourceTextCommands.DeleteSourceText;
+using TextProcess.Actions.Queries.SourceTextQueries;
+using TextProcess.Actions.Commands.SourceTextCommands;
 
 namespace TextProcess.Controllers
 {
@@ -36,11 +33,11 @@ namespace TextProcess.Controllers
 			return Ok(sourceTexts);
 		}
 
-		[HttpGet("GetById/{id}")]
+		[HttpGet("GetById")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesDefaultResponseType]
-		public async Task<IActionResult> GetSourceText(GetSourceTextQuery request, CancellationToken token)
+		public async Task<IActionResult> GetSourceText([FromQuery] GetSourceTextQuery request, CancellationToken token)
 		{
 			var sourceText = await _mediator.Send(request, token);
 
@@ -81,7 +78,7 @@ namespace TextProcess.Controllers
 		[HttpDelete("DeleteById/{id}")]
 		[ProducesResponseType(StatusCodes.Status204NoContent)]
 		[ProducesDefaultResponseType]
-		public async Task<IActionResult> DeleteSourceText(DeleteSourceTextCommand request, CancellationToken token)
+		public async Task<IActionResult> DeleteSourceText([FromForm] DeleteSourceTextCommand request, CancellationToken token)
 		{
 			await _mediator.Send(request, token);
 
